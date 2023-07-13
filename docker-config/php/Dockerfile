@@ -38,8 +38,9 @@ RUN apt-get update \
   && docker-php-ext-install pdo_mysql mysqli zip
 
 # install stable node and latest npm
-# RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
-# RUN apt-get install -y nodejs
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash
+RUN apt-get install -y nodejs
+RUN npm install -g npm@9.8.0
 
 # # install xdebug
 # RUN pecl install xdebug-2.7.2 && docker-php-ext-enable xdebug
