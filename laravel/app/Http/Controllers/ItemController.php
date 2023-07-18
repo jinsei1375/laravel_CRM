@@ -61,7 +61,9 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        return Inertia::render('Items/Show', [
+            'item' => $item
+        ]);
     }
 
     /**
@@ -72,7 +74,9 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        //
+        return Inertia::render('Items/Edit', [
+            'item' => $item
+        ]);
     }
 
     /**
