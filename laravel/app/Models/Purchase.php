@@ -4,23 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Model\Purchase;
-use App\Models\Purchase as ModelsPurchase;
+use App\Models\Customer;
+use App\Models\Item;
 
-class Item extends Model
+class Purchase extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'memo',
-        'price',
-        'is_selling',
+        'customer_id',
+        'status',
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 
     public function items()
     {
-        return $this->belongsToMany(Purchase::class)
+        return $this->belongsToMany(Item::class)
         ->withPivot('quantity');
     }
+
 }
