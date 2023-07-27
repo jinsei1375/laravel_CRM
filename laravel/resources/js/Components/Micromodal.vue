@@ -23,6 +23,14 @@ const searchCustomers = async() => {
   }
 }
 
+const emit = defineEmits(['update:customerId'])
+
+const setCustomer = e => {
+  search.value = e.kana
+  emit('update:customerId', e.id)
+  toggleStatus()
+}
+
 </script>
 
 <template>
@@ -36,18 +44,38 @@ const searchCustomers = async() => {
           <button @click="toggleStatus" type="button" class="modal__close" aria-label="Close modal" data-micromodal-close></button>
         </header>
         <main class="modal__content" id="modal-1-content">
-          <p>
-            Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.
-          </p>
+          <div v-if="customers.value">
+            <table class="table-auto w-full text-left whitespace-no-wrap">
+              <thead>
+                <tr>
+                  <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">ID</th>
+                  <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">氏名</th>
+                  <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">かな</th>
+                  <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">電話番号</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="customer in customers.value.data" :key="customer.id">
+                  <td class="border-b-2 border-gray-200 px-4 py-3">
+                    <button type="button" class="text-blue-400" @click="setCustomer({ id: customer.id, kana: customer.kana })">
+                      {{ customer.id }}
+                    </button>
+                  </td>
+                  <td class="border-b-2 border-gray-200 px-4 py-3">{{ customer.name }}</td>
+                  <td class="border-b-2 border-gray-200 px-4 py-3">{{ customer.kana }}</td>
+                  <td class="border-b-2 border-gray-200 px-4 py-3">{{ customer.tel }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </main>
         <footer class="modal__footer">
-          <button @click="toggleStatus" type="button" class="modal__btn modal__btn-primary">Continue</button>
           <button @click="toggleStatus" type="button" class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
         </footer>
       </div>
     </div>
   </div>
 
-  <input type="text" name="customer" v-model="search">
-  <button @click="searchCustomers" type="button" data-micromodal-trigger="modal-1">検索する</button>
+  <input type="text" name="customer" v-model="search" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+  <button @click="searchCustomers" type="button" data-micromodal-trigger="modal-1" class="flex mx-auto text-white bg-teal-500 border-0 py-2 px-8 focus:outline-none hover:bg-teal-600 rounded text-lg">検索する</button>
 </template>

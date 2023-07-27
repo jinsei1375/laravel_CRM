@@ -35,7 +35,6 @@ class PurchaseController extends Controller
         ->get();
 
         return Inertia::render('Purchases/Create', [
-            'customers' => $customers,
             'items' => $items,
         ]);
 
