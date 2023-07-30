@@ -8,7 +8,9 @@ import { onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
 
 const props = defineProps({
-  orders: Object
+  orders: Object,
+  query: Object,
+  request: Object
 })
 
 onMounted(() => {
@@ -47,7 +49,7 @@ onMounted(() => {
                     </thead>
                     <tbody>
                       <tr v-for="order in props.orders.data" :key="order.id">
-                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.id }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3 text-blue-500"><Link :href="route('purchases.show', {purchase: order.id})" class="color-blue-400">{{ order.id }}</Link></td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.customer_name }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.total }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.status }}</td>
