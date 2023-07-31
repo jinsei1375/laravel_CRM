@@ -14,4 +14,18 @@ class Order extends Model
     {
         static::addGlobalScope(new Subtotal);
     }
+
+    public function scopeBetweenDate($query, $startDate = null, $endDate = null)
+    {
+        if (is_null($startDate) && is_null($endDate)) {
+            return $query;
+        } elseif (!is_null($startDate) && is_null($endDate)) {
+            return $query->where('created_at', ">=", $startDate);
+        } elseif (is_null($startDate) && !is_null($endDate)) {
+            return $query->where('created_at', "<=", $endDate);
+        } elseif (!is_null($startDate) && !is_null($endDate)) {
+            return $query->where('created_at', "<=", $endDate)
+            ->where('created_at', ">=", $startDate);
+        }
+    }
 }
