@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use App\Services\AnalysisService;
+use App\Services\DecilService;
 
 class AnalysisController extends Controller
 {
@@ -20,6 +21,8 @@ class AnalysisController extends Controller
 				list($data, $labels, $totals) = AnalysisService::perMonth($subQuery);
 		} elseif($request->type === 'perYear') {
 				list($data, $labels, $totals) = AnalysisService::perYear($subQuery);
+		} elseif($request->type === 'decil') {
+			list($data, $labels, $totals) = DecilService::decil($subQuery);
 		}
 		return response()->json([
 				'data' => $data,
