@@ -9,6 +9,7 @@ use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use App\Services\AnalysisService;
 use App\Services\DecilService;
+use App\Services\RFMService;
 
 class AnalysisController extends Controller
 {
@@ -17,13 +18,31 @@ class AnalysisController extends Controller
 		$subQuery = Order::BetweenDate($request->startDate, $request->endDate);
 		if($request->type === 'perDay') {
 				list($data, $labels, $totals) = AnalysisService::perDay($subQuery);
-		} elseif($request->type === 'perMonth') {
+		} 
+
+		if($request->type === 'perMonth') {
 				list($data, $labels, $totals) = AnalysisService::perMonth($subQuery);
-		} elseif($request->type === 'perYear') {
+		} 
+
+		if($request->type === 'perYear') {
 				list($data, $labels, $totals) = AnalysisService::perYear($subQuery);
-		} elseif($request->type === 'decil') {
+		} 
+		
+		if($request->type === 'decil') {
 			list($data, $labels, $totals) = DecilService::decil($subQuery);
+		} 
+
+		if($request->type === 'rfm') {
+			list($data, $totals, $eachCount) = RFMService::rfm($subQuery, $request->rfmPrms);
+
+			return response()->json([
+				'data' => $data,
+				'type' => $request->type,
+				'eachCount' => $eachCount,
+				'totals' => $totals,
+			], Response::HTTP_OK);
 		}
+
 		return response()->json([
 				'data' => $data,
 				'type' => $request->type,
